@@ -1,0 +1,58 @@
+<html>
+  <script src="https://unpkg.com/realm-web@1.1.0/dist/bundle.iife.js"></script>
+<script>
+async function onLoad()
+{
+  try {
+  	  const realmApp =  new Realm.App({ id: 'realmilt-dlunu' });
+
+      const credential =  Realm.Credentials.emailPassword("student@mdbtraining.net", "tra1n1ng")
+
+      let user = await realmApp.logIn(credential)
+
+      print(`logged in as id = ${user.id}`)
+
+      await realmApp.currentUser.logOut()
+  }
+  catch (err) {
+      alert(`Error: ${err}`)
+  }
+
+  try {
+  	  const realmApp =  new Realm.App({ id: 'realmilt-dlunu' });
+      const anonCredential =  Realm.Credentials.anonymous()
+      let user = await realmApp.logIn(anonCredential)
+      r = await user.functions.dinoName("stego");
+			r.forEach(d=>print(d))
+      await realmApp.currentUser.logOut()
+  }
+  catch (err) {
+      alert(`Error: ${err}`)
+  }
+
+  try {
+  	  const realmApp =  new Realm.App({ id: 'realmilt-dlunu' });
+      const credential =  Realm.Credentials.emailPassword("student@mdbtraining.net", "tra1n1ng")
+      let user = await realmApp.logIn(credential)
+      const mongodb = user.mongoClient("mongodb-atlas");
+      const histcoll = mongodb.db("dinohist").collection("history");
+      latest = await histcoll.find({},{limit:1,sort:{"date":-1}})
+ 
+      print(`<pre>${JSON.stringify(latest[0],null,2)}</pre>`)
+       
+      await realmApp.currentUser.logOut()
+  }
+  catch (err) {
+      alert(`Error: ${err}`)
+  }
+}
+
+
+</script>
+  
+  
+  <body onLoad="onLoad()">
+    <div id="output"></div>
+    <script>function print(v) { document.getElementById('output').innerHTML += `${v}<br>` }</script>
+  </body>
+</html>
